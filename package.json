@@ -1,0 +1,47 @@
+{
+  "name": "adanaemlakofisi",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start -H 0.0.0.0",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:target:sqlite": "node scripts/set-db-target.mjs sqlite",
+    "db:target:postgres": "node scripts/set-db-target.mjs postgres",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:setup:postgres": "node scripts/set-db-target.mjs postgres && docker compose up -d && prisma migrate deploy && tsx prisma/seed.ts",
+    "build:postgres": "node scripts/set-db-target.mjs postgres && prisma generate && prisma migrate deploy && next build",
+    "admin:hash-password": "tsx scripts/hash-password.ts",
+    "postinstall": "node scripts/set-db-target.mjs sqlite && prisma generate"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "@prisma/client": "^6.9.0",
+    "next": "^15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "eslint": "^9.27.0",
+    "eslint-config-next": "^15.3.3",
+    "prisma": "^6.9.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

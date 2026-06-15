@@ -1,0 +1,22 @@
+.content h2 {
+  font-size: 1.35rem;
+  margin: 2rem 0 1rem;
+  color: var(--color-navy);
+}
+
+.content h3 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--color-navy);
+}
+
+.content p {
+  color: var(--color-gray-700);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.content a {
+  color: var(--color-gold);
+  font-weight: 500;
+}

@@ -1,0 +1,47 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.card h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--color-gray-700);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.cta {
+  text-align: center;
+  padding: 2rem;
+  background: var(--color-gray-50);
+  border-radius: var(--radius);
+}
+
+.cta p {
+  margin: 0 0 1rem;
+  color: var(--color-gray-700);
+}

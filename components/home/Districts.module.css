@@ -1,0 +1,41 @@
+.grid {
+  align-items: stretch;
+}
+
+.card {
+  display: block;
+  background: var(--color-white);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1px solid var(--color-gray-200);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--color-navy);
+}
+
+.card p {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--color-gray-700);
+  line-height: 1.6;
+}
+
+.link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+.card:hover .link {
+  color: var(--color-gold-hover);
+}

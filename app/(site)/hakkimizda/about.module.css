@@ -1,0 +1,35 @@
+.content {
+  max-width: 720px;
+}
+
+.content > p {
+  color: var(--color-gray-700);
+  line-height: 1.8;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+  padding: 2rem 0;
+  border-top: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.values h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+}
+
+.values p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-gray-700);
+}
+
+@media (max-width: 600px) {
+  .values {
+    grid-template-columns: 1fr;
+  }
+}

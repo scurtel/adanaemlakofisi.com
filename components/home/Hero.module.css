@@ -1,0 +1,51 @@
+.hero {
+  background: linear-gradient(135deg, var(--color-navy-dark) 0%, var(--color-navy) 60%, var(--color-navy-light) 100%);
+  color: var(--color-white);
+  padding: 4rem 0 5rem;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.content {
+  max-width: 700px;
+}
+
+.content h1 {
+  color: var(--color-white);
+  margin: 0 0 1rem;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 1.5rem;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.search {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .ctas .btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,45 @@
+databases:
+  - name: adanaemlakofisi-db
+    plan: free
+    databaseName: adanaemlakofisi
+    user: adanaemlakofisi
+
+services:
+  - type: web
+    name: adanaemlakofisi
+    runtime: node
+    plan: starter
+    buildCommand: npm install && node scripts/set-db-target.mjs postgres && npx prisma migrate deploy && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: adanaemlakofisi-db
+          property: connectionString
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: ADMIN_SESSION_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: NOTIFICATION_EMAIL_TO
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false
+      - key: GOOGLE_SITE_VERIFICATION
+        sync: false

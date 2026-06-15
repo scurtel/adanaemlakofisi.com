@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1a2f4a"/>
+  <rect x="0" y="480" width="1200" height="8" fill="#c9a227"/>
+  <text x="600" y="280" font-family="system-ui, sans-serif" font-size="56" font-weight="700" fill="#ffffff" text-anchor="middle">Adana Emlak Ofisi</text>
+  <text x="600" y="350" font-family="system-ui, sans-serif" font-size="28" fill="#c9a227" text-anchor="middle">Sat1l1k ve Kiral1k Gayrimenkul</text>
+  <text x="600" y="400" font-family="system-ui, sans-serif" font-size="22" fill="#e9ecef" text-anchor="middle">adanaemlakofisi.com</text>
+</svg>

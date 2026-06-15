@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Listing {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  type            String
+  propertyType    String
+  city            String   @default("Adana")
+  district        String
+  neighborhood    String
+  price           Int
+  currency        String   @default("TRY")
+  grossM2         Int
+  netM2           Int?
+  roomCount       String?
+  buildingAge     Int?
+  floor           Int?
+  totalFloors     Int?
+  heating         String?
+  description     String
+  features        String   @default("[]")
+  images          String   @default("[]")
+  contactPhone    String
+  whatsappPhone   String
+  metaTitle       String?
+  metaDescription String?
+  isFeatured      Boolean  @default(false)
+  isPublished     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  leads           Lead[]
+}
+
+model BlogPost {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  excerpt         String
+  content         String
+  coverImage      String?
+  category        String?
+  tags            String   @default("[]")
+  metaTitle       String?
+  metaDescription String?
+  isPublished     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  message   String
+  source    String
+  listingId String?
+  listing   Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+  status    String   @default("yeni")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSettings {
+  id            String  @id @default("default")
+  siteName      String
+  phone         String
+  whatsappPhone String
+  email         String
+  address       String
+  googleMapsUrl String?
+  instagramUrl  String?
+  facebookUrl   String?
+}

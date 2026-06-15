@@ -1,0 +1,22 @@
+.content {
+  max-width: 720px;
+}
+
+.content h2 {
+  font-size: 1.15rem;
+  margin: 2rem 0 0.75rem;
+}
+
+.content h2:first-child {
+  margin-top: 0;
+}
+
+.content p {
+  color: var(--color-gray-700);
+  line-height: 1.7;
+}
+
+.content a {
+  color: var(--color-gold);
+  font-weight: 500;
+}

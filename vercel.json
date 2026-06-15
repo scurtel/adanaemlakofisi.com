@@ -1,0 +1,4 @@
+{
+  "buildCommand": "node scripts/set-db-target.mjs postgres && prisma generate && prisma migrate deploy && next build",
+  "installCommand": "npm install"
+}
