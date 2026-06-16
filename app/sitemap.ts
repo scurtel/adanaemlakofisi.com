@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { DISTRICTS } from "@/lib/constants";
 import { SITE_CONFIG } from "@/lib/constants";
 import { getPublishedBlogPosts } from "@/lib/queries/blog";
-import { prisma } from "@/lib/db";
+import { getListingsSafe } from "@/lib/queries/listings";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = SITE_CONFIG.url;
@@ -25,14 +25,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const listings = await prisma.listing.findMany({
-    where: { isPublished: true },
-    select: { slug: true, updatedAt: true },
-  });
-
+  const listings = await getListingsSafe();
   const listingPages: MetadataRoute.Sitemap = listings.map((l) => ({
     url: `${base}/ilan/${l.slug}`,
-    lastModified: l.updatedAt,
+    lastModified: new Date(l.createdAt),
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));

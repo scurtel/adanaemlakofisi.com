@@ -10,14 +10,35 @@ function mapPropertyType(type: string): string {
 }
 
 async function main() {
-  await prisma.lead.deleteMany();
-  await prisma.listing.deleteMany();
-  await prisma.blogPost.deleteMany();
-
   for (const listing of listings) {
-    await prisma.listing.create({
-      data: {
+    await prisma.listing.upsert({
+      where: { slug: listing.slug },
+      create: {
         slug: listing.slug,
+        title: listing.title,
+        type: listing.type,
+        propertyType: mapPropertyType(listing.propertyType),
+        city: listing.city,
+        district: listing.district,
+        neighborhood: listing.neighborhood,
+        price: listing.price,
+        currency: listing.currency,
+        grossM2: listing.grossM2,
+        netM2: listing.netM2 ?? null,
+        roomCount: listing.roomCount ?? null,
+        buildingAge: listing.buildingAge ?? null,
+        floor: listing.floor ?? null,
+        totalFloors: listing.totalFloors ?? null,
+        heating: listing.heating ?? null,
+        description: listing.description,
+        features: JSON.stringify(listing.features),
+        images: JSON.stringify(listing.images),
+        contactPhone: listing.contactPhone,
+        whatsappPhone: listing.whatsappPhone,
+        isFeatured: listing.featured ?? false,
+        isPublished: true,
+      },
+      update: {
         title: listing.title,
         type: listing.type,
         propertyType: mapPropertyType(listing.propertyType),
@@ -45,9 +66,20 @@ async function main() {
   }
 
   for (const post of blogSeedPosts) {
-    await prisma.blogPost.create({
-      data: {
+    await prisma.blogPost.upsert({
+      where: { slug: post.slug },
+      create: {
         slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        tags: JSON.stringify(post.tags),
+        category: post.category || "rehber",
+        metaTitle: post.metaTitle,
+        metaDescription: post.metaDescription,
+        isPublished: true,
+      },
+      update: {
         title: post.title,
         excerpt: post.excerpt,
         content: post.content,

@@ -2,20 +2,31 @@ import { prisma } from "@/lib/db";
 import { mapBlogPost } from "@/lib/mappers";
 import { toJsonArray } from "@/lib/utils/json";
 import { slugify } from "@/lib/utils/slug";
+import { isPrismaMissingTableError } from "./safe";
 
 export async function getPublishedBlogPosts() {
-  const rows = await prisma.blogPost.findMany({
-    where: { isPublished: true },
-    orderBy: { createdAt: "desc" },
-  });
-  return rows.map(mapBlogPost);
+  try {
+    const rows = await prisma.blogPost.findMany({
+      where: { isPublished: true },
+      orderBy: { createdAt: "desc" },
+    });
+    return rows.map(mapBlogPost);
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return [];
+    throw error;
+  }
 }
 
 export async function getBlogBySlug(slug: string, publishedOnly = true) {
-  const row = await prisma.blogPost.findUnique({ where: { slug } });
-  if (!row) return null;
-  if (publishedOnly && !row.isPublished) return null;
-  return mapBlogPost(row);
+  try {
+    const row = await prisma.blogPost.findUnique({ where: { slug } });
+    if (!row) return null;
+    if (publishedOnly && !row.isPublished) return null;
+    return mapBlogPost(row);
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return null;
+    throw error;
+  }
 }
 
 export async function getAllBlogPostsAdmin() {
@@ -98,9 +109,14 @@ export async function deleteBlogPost(id: string) {
 }
 
 export async function getBlogSlugs() {
-  const rows = await prisma.blogPost.findMany({
-    where: { isPublished: true },
-    select: { slug: true },
-  });
-  return rows.map((r) => r.slug);
+  try {
+    const rows = await prisma.blogPost.findMany({
+      where: { isPublished: true },
+      select: { slug: true },
+    });
+    return rows.map((r) => r.slug);
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return [];
+    throw error;
+  }
 }

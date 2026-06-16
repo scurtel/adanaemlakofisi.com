@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { SITE_CONFIG } from "@/lib/constants";
+import { isPrismaMissingTableError, logSafeQueryError } from "./safe";
 
 export interface SiteSettingsData {
   siteName: string;
@@ -33,6 +34,16 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
     instagramUrl: row.instagramUrl ?? undefined,
     facebookUrl: row.facebookUrl ?? undefined,
   };
+}
+
+export async function getSiteSettingsSafe(): Promise<SiteSettingsData> {
+  try {
+    return await getSiteSettings();
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return DEFAULTS;
+    logSafeQueryError("getSiteSettingsSafe", error);
+    return DEFAULTS;
+  }
 }
 
 export async function updateSiteSettings(data: SiteSettingsData) {

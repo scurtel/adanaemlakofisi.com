@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import BlogContent from "@/components/blog/BlogContent";
 import SeoJsonLd from "@/components/seo/SeoJsonLd";
 import { getBlogBySlug } from "@/lib/queries/blog";
-import { getSiteSettings } from "@/lib/queries/settings";
+import { getSiteSettingsSafe } from "@/lib/queries/settings";
 import { SITE_CONFIG } from "@/lib/constants";
 import { createPageMetadata, DEFAULT_OG_IMAGE } from "@/lib/seo/metadata";
 import { blogPostingSchema, breadcrumbSchema, safeSchemaData } from "@/lib/seo/schema";
@@ -34,7 +34,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const [post, settings] = await Promise.all([
     getBlogBySlug(slug),
-    getSiteSettings(),
+    getSiteSettingsSafe(),
   ]);
   if (!post) notFound();
 

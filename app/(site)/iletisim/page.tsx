@@ -3,7 +3,7 @@ import Link from "next/link";
 import ContactForm from "@/components/ui/ContactForm";
 import SeoJsonLd from "@/components/seo/SeoJsonLd";
 import { SITE_CONFIG } from "@/lib/constants";
-import { getSiteSettings } from "@/lib/queries/settings";
+import { getSiteSettingsSafe } from "@/lib/queries/settings";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, safeSchemaData } from "@/lib/seo/schema";
 import styles from "./contact.module.css";
@@ -16,7 +16,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default async function IletisimPage() {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettingsSafe();
 
   return (
     <>

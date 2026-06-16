@@ -1,7 +1,7 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import SeoJsonLd from "@/components/seo/SeoJsonLd";
-import { getSiteSettings } from "@/lib/queries/settings";
+import { getSiteSettingsSafe } from "@/lib/queries/settings";
 import { localBusinessSchema, realEstateAgentSchema } from "@/lib/seo/schema";
 
 export default async function SiteLayout({
@@ -9,7 +9,7 @@ export default async function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettingsSafe();
 
   return (
     <>

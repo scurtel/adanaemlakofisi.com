@@ -8,7 +8,7 @@ import { getListingBySlug } from "@/lib/queries/listings";
 import {
   buildListingWhatsAppMessage,
   buildWhatsAppUrl,
-  getSiteSettings,
+  getSiteSettingsSafe,
 } from "@/lib/queries/settings";
 import { SITE_CONFIG } from "@/lib/constants";
 import { createPageMetadata, DEFAULT_OG_IMAGE } from "@/lib/seo/metadata";
@@ -44,7 +44,7 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const [listing, settings] = await Promise.all([
     getListingBySlug(slug),
-    getSiteSettings(),
+    getSiteSettingsSafe(),
   ]);
   if (!listing) notFound();
 

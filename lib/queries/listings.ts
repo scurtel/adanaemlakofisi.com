@@ -3,6 +3,8 @@ import { dbPropertyType, mapListing } from "@/lib/mappers";
 import { toJsonArray } from "@/lib/utils/json";
 import { generateListingSlug } from "@/lib/utils/slug";
 import type { ListingType, PropertyType } from "@/types";
+import type { Listing } from "@/types";
+import { isPrismaMissingTableError, logSafeQueryError } from "./safe";
 
 export interface ListingFilters {
   type?: ListingType;
@@ -46,20 +48,44 @@ export async function getPublishedListings(filters: ListingFilters = {}) {
   return rows.map(mapListing);
 }
 
+export async function getListingsSafe(filters: ListingFilters = {}): Promise<Listing[]> {
+  try {
+    return await getPublishedListings(filters);
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return [];
+    logSafeQueryError("getListingsSafe", error);
+    return [];
+  }
+}
+
+export async function getListingsByDistrictSafe(district: string): Promise<Listing[]> {
+  return getListingsSafe({ district });
+}
+
 export async function getFeaturedListings() {
-  return getPublishedListings({ featuredOnly: true });
+  return getListingsSafe({ featuredOnly: true });
 }
 
 export async function getListingBySlug(slug: string, publishedOnly = true) {
-  const row = await prisma.listing.findUnique({ where: { slug } });
-  if (!row) return null;
-  if (publishedOnly && !row.isPublished) return null;
-  return mapListing(row);
+  try {
+    const row = await prisma.listing.findUnique({ where: { slug } });
+    if (!row) return null;
+    if (publishedOnly && !row.isPublished) return null;
+    return mapListing(row);
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return null;
+    throw error;
+  }
 }
 
 export async function getListingById(id: string) {
-  const row = await prisma.listing.findUnique({ where: { id } });
-  return row ? mapListing(row) : null;
+  try {
+    const row = await prisma.listing.findUnique({ where: { id } });
+    return row ? mapListing(row) : null;
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return null;
+    throw error;
+  }
 }
 
 export async function getAllListingsAdmin(filters: ListingFilters = {}) {
@@ -190,9 +216,14 @@ export async function deleteListing(id: string) {
 }
 
 export async function getListingSlugs() {
-  const rows = await prisma.listing.findMany({
-    where: { isPublished: true },
-    select: { slug: true },
-  });
-  return rows.map((r) => r.slug);
+  try {
+    const rows = await prisma.listing.findMany({
+      where: { isPublished: true },
+      select: { slug: true },
+    });
+    return rows.map((r) => r.slug);
+  } catch (error) {
+    if (isPrismaMissingTableError(error)) return [];
+    throw error;
+  }
 }

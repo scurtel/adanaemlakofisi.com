@@ -3,7 +3,7 @@ import Link from "next/link";
 import ListingCard from "@/components/listings/ListingCard";
 import SearchBox from "@/components/listings/SearchBox";
 import SeoJsonLd from "@/components/seo/SeoJsonLd";
-import { getPublishedListings } from "@/lib/queries/listings";
+import { getListingsSafe } from "@/lib/queries/listings";
 import { SITE_CONFIG } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, safeSchemaData } from "@/lib/seo/schema";
@@ -30,7 +30,7 @@ interface PageProps {
 
 export default async function SatilikPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const listings = await getPublishedListings({
+  const listings = await getListingsSafe({
     type: "satilik",
     district: params.ilce,
     propertyType: params.tip,

@@ -6,11 +6,11 @@ import AboutSection from "@/components/home/AboutSection";
 import Districts from "@/components/home/Districts";
 import BlogSection from "@/components/home/BlogSection";
 import ContactCTA from "@/components/ui/ContactCTA";
-import { getSiteSettings } from "@/lib/queries/settings";
+import { getSiteSettingsSafe } from "@/lib/queries/settings";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettingsSafe();
   return createPageMetadata({
     title: settings.siteName,
     description:
@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettingsSafe();
 
   return (
     <>

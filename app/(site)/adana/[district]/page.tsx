@@ -4,7 +4,7 @@ import DistrictPageContent, { FAQ_ITEMS } from "@/components/district/DistrictPa
 import SeoJsonLd from "@/components/seo/SeoJsonLd";
 import { DISTRICTS, SITE_CONFIG } from "@/lib/constants";
 import { getDistrictStats } from "@/lib/queries/district";
-import { getPublishedListings } from "@/lib/queries/listings";
+import { getListingsByDistrictSafe } from "@/lib/queries/listings";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbSchema, faqSchema, safeSchemaData } from "@/lib/seo/schema";
 import { notFound } from "next/navigation";
@@ -37,7 +37,7 @@ export default async function DistrictPage({ params }: PageProps) {
   if (!district) notFound();
 
   const [listings, stats] = await Promise.all([
-    getPublishedListings({ district: district.name }),
+    getListingsByDistrictSafe(district.name),
     getDistrictStats(district.name),
   ]);
 

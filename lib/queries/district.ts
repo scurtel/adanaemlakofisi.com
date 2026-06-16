@@ -1,4 +1,4 @@
-import { getPublishedListings } from "./listings";
+import { getListingsByDistrictSafe } from "./listings";
 import type { Listing } from "@/types";
 
 export interface DistrictStats {
@@ -12,7 +12,7 @@ export interface DistrictStats {
 }
 
 export async function getDistrictStats(districtName: string): Promise<DistrictStats> {
-  const listings = await getPublishedListings({ district: districtName });
+  const listings = await getListingsByDistrictSafe(districtName);
   return summarizeListings(listings);
 }
 
