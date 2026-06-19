@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { getProductionDatabaseUrl } from "./db-url.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -9,17 +10,15 @@ function run(cmd, label) {
   execSync(cmd, { stdio: "inherit", cwd: root, env: process.env });
 }
 
-// DATABASE_URL tanımlı değilse production.db kullan
-if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = "file:./prisma/production.db";
-  console.log(`[hostinger-build] DATABASE_URL tanımlı değil → ${process.env.DATABASE_URL}`);
-}
+process.env.DATABASE_URL = getProductionDatabaseUrl(root);
+console.log(`[hostinger-build] DATABASE_URL → ${process.env.DATABASE_URL}`);
 
 const steps = [
   { cmd: "node scripts/set-db-target.mjs sqlite", label: "SQLite hedefi ayarlanıyor" },
-  { cmd: "npx prisma generate",                   label: "Prisma client üretiliyor" },
-  { cmd: "npx prisma migrate deploy",             label: "Prisma migration uygulanıyor" },
-  { cmd: "npm run build:next",                    label: "Next.js build başlıyor" },
+  { cmd: "npx prisma generate", label: "Prisma client üretiliyor" },
+  { cmd: "npx prisma migrate deploy", label: "Prisma migration uygulanıyor" },
+  { cmd: "npx prisma db seed", label: "Veritabanı seed ediliyor" },
+  { cmd: "npm run build:next", label: "Next.js build başlıyor" },
 ];
 
 for (const step of steps) {
@@ -30,19 +29,6 @@ for (const step of steps) {
     console.error(err.message ?? err);
     process.exit(1);
   }
-}
-
-// Seed: hata verirse build'i kırma, sadece uyar
-try {
-  console.log("\n[hostinger-build] Seed çalıştırılıyor (hata verirse atlanır)...");
-  execSync("npx tsx prisma/seed.ts", {
-    stdio: "inherit",
-    cwd: root,
-    env: process.env,
-  });
-  console.log("[hostinger-build] Seed tamamlandı.");
-} catch (err) {
-  console.warn("[hostinger-build] Seed başarısız, atlandı:", err.message ?? err);
 }
 
 console.log("\n[hostinger-build] Build tamamlandı.");

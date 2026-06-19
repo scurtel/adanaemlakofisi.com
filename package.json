@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "node scripts/hostinger-build.mjs",
     "build:next": "next build",
-    "start": "cross-env DATABASE_URL=file:./prisma/production.db next start -H 0.0.0.0",
+    "start": "node scripts/hostinger-start.mjs",
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:target:sqlite": "node scripts/set-db-target.mjs sqlite",
@@ -26,8 +26,10 @@
     "@google/generative-ai": "^0.24.0",
     "@prisma/client": "^6.9.0",
     "next": "^15.3.3",
+    "prisma": "^6.9.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "tsx": "^4.19.4"
   },
   "devDependencies": {
     "@types/node": "^22.15.0",
@@ -36,8 +38,6 @@
     "cross-env": "^10.1.0",
     "eslint": "^9.27.0",
     "eslint-config-next": "^15.3.3",
-    "prisma": "^6.9.0",
-    "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
   "prisma": {
