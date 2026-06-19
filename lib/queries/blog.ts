@@ -108,6 +108,23 @@ export async function deleteBlogPost(id: string) {
   await prisma.blogPost.delete({ where: { id } });
 }
 
+export async function getRelatedBlogPosts(
+  currentSlug: string,
+  tags: string[],
+  limit = 3
+) {
+  const posts = await getPublishedBlogPosts();
+  return posts
+    .filter((p) => p.slug !== currentSlug)
+    .map((p) => ({
+      post: p,
+      score: p.tags.filter((t) => tags.includes(t)).length,
+    }))
+    .sort((a, b) => b.score - a.score || b.post.publishedAt.localeCompare(a.post.publishedAt))
+    .slice(0, limit)
+    .map((r) => r.post);
+}
+
 export async function getBlogSlugs() {
   try {
     const rows = await prisma.blogPost.findMany({

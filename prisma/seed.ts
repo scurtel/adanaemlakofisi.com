@@ -1,8 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { blogSeedPosts } from "../data/blog-seed-content";
+import { blogSeoPosts } from "../data/blog-seo-content";
 import { listings } from "../data/listings";
 
 const prisma = new PrismaClient();
+const allBlogPosts = [...blogSeedPosts, ...blogSeoPosts].filter(
+  (post) => post?.slug && post?.content
+);
 
 function mapPropertyType(type: string): string {
   if (type === "is-yeri") return "is_yeri";
@@ -65,7 +69,7 @@ async function main() {
     });
   }
 
-  for (const post of blogSeedPosts) {
+  for (const post of allBlogPosts) {
     await prisma.blogPost.upsert({
       where: { slug: post.slug },
       create: {
@@ -105,7 +109,7 @@ async function main() {
     update: {},
   });
 
-  console.log(`Seed tamamlandı: ${listings.length} ilan, ${blogSeedPosts.length} blog yazısı.`);
+  console.log(`Seed tamamlandı: ${listings.length} ilan, ${allBlogPosts.length} blog yazısı.`);
 }
 
 main()

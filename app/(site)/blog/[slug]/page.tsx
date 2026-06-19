@@ -3,11 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlogContent from "@/components/blog/BlogContent";
 import SeoJsonLd from "@/components/seo/SeoJsonLd";
-import { getBlogBySlug } from "@/lib/queries/blog";
+import { parseFaqsFromContent } from "@/lib/blog/parseFaqs";
+import { getBlogBySlug, getRelatedBlogPosts } from "@/lib/queries/blog";
 import { getSiteSettingsSafe } from "@/lib/queries/settings";
 import { SITE_CONFIG } from "@/lib/constants";
 import { createPageMetadata, DEFAULT_OG_IMAGE } from "@/lib/seo/metadata";
-import { blogPostingSchema, breadcrumbSchema, safeSchemaData } from "@/lib/seo/schema";
+import { blogPostingSchema, breadcrumbSchema, faqSchema, safeSchemaData } from "@/lib/seo/schema";
 import styles from "./blog-detail.module.css";
 
 interface PageProps {
@@ -38,6 +39,8 @@ export default async function BlogDetailPage({ params }: PageProps) {
   ]);
   if (!post) notFound();
 
+  const relatedPosts = await getRelatedBlogPosts(post.slug, post.tags, 3);
+  const faqs = parseFaqsFromContent(post.content);
   const postUrl = `${SITE_CONFIG.url}/blog/${post.slug}`;
   const date = new Date(post.publishedAt).toLocaleDateString("tr-TR", {
     year: "numeric",
@@ -52,6 +55,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
       { name: "Blog", url: `${SITE_CONFIG.url}/blog` },
       { name: post.title, url: postUrl },
     ]),
+    faqs.length > 0 ? faqSchema(faqs) : null,
   ]);
 
   return (
@@ -84,6 +88,19 @@ export default async function BlogDetailPage({ params }: PageProps) {
               <span key={tag} className={styles.tag}>{tag}</span>
             ))}
           </div>
+
+          {relatedPosts.length > 0 && (
+            <aside className={styles.relatedPosts} aria-label="İlgili yazılar">
+              <h2>İlgili Yazılar</h2>
+              <ul className={styles.relatedList}>
+                {relatedPosts.map((related) => (
+                  <li key={related.slug}>
+                    <Link href={`/blog/${related.slug}`}>{related.title}</Link>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          )}
         </div>
       </article>
     </>

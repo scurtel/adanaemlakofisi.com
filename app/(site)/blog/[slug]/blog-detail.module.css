@@ -30,3 +30,37 @@
   font-size: 0.8rem;
   color: var(--color-gray-700);
 }
+
+.relatedPosts {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.relatedPosts h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--color-navy);
+}
+
+.relatedList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.relatedList a {
+  display: block;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  color: var(--color-navy);
+  font-weight: 500;
+  transition: border-color 0.2s;
+}
+
+.relatedList a:hover {
+  border-color: var(--color-gold);
+}
